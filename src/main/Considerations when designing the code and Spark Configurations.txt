@@ -1,0 +1,41 @@
+Design Considerations
+*********************
+
+1. Modularity - This modularity allows each component to be developed, tested, and maintained independently.
+*  Separation of `SparkApp` and `RDD_2` ensures that orchestration logic and data processing logic are kept separate. 
+*  Each function is responsible for a specific task, such as reading data (`readParquetFile`), combining RDDs (`combine2RDDs`), or finding top items (`findTopXItemsPerLocation`).
+
+2. Scalability and Reusability - Reduces code duplication and enhances maintainability
+* The design is scalable and reusable. For instance, the `combine2RDDs` and `findTopXItemsPerLocation` functions can be reused for different datasets and configurations. 
+
+3. Optimality in Time/Space Complexity - Efficient in terms of performance
+* RDD transformations avoids using join to minimize data shuffling.
+
+4. Ease of changing input parameters - Easy adjustment of input parameters without changing the code
+* Using a configuration file (`config.properties`) makes the application more flexible and easier to deploy in different environments (development, testing, production).
+
+5. Error handling - makes debugging easier and speeds up the maintenance process
+* Functional constructs like Try, Success, and Failure from the scala.util package is used to handle errors in a more functional and understandable way.
+
+
+Spark Configurations
+*********************
+Set these configurations in the spark-defaults.conf file.
+The specific numbers and settings in the proposed Spark configuration are chosen based on typical requirements and best practices for handling large datasets (millions of rows) 
+efficiently in a distributed environment.
+
+# Spark master URL
+spark.master                        yarn   (YARN is a resource manager that allows Spark to dynamically share and manage resources across multiple applications)
+
+# Amount of memory to use per executor process
+spark.executor.memory               8g     (Executors are the processes responsible for executing tasks. Allocating 8 GB of memory per executor ensures they have enough memory to handle large datasets)
+
+# Number of cores to use on each executor
+spark.executor.cores                4      (Allocating 4 CPU cores per executor allows each executor to run multiple tasks concurrently, improving throughput and resource utilization)
+
+# Number of executors
+spark.executor.instances            10     (Running 10 executors provides sufficient parallelism to process large datasets efficiently)
+
+# Number of partitions for shuffle operations
+spark.sql.shuffle.partitions        200    (Shuffle operations are expensive and involve data movement across the network. Setting the number of shuffle partitions to 200 helps distribute the data evenly across the cluster, reducing the likelihood of bottlenecks)
+
