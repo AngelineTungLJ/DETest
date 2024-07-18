@@ -13,12 +13,13 @@ resolvers ++= Seq(
   "MavenRepository" at "https://mvnrepository.com"
 )
 
+
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion,
   "org.apache.spark" %% "spark-sql" % sparkVersion,
   // logging
   "org.apache.logging.log4j" % "log4j-api" % log4jVersion,
   "org.apache.logging.log4j" % "log4j-core" % log4jVersion,
-  // testing
-  "org.scalatest" %% "scalatest" % "3.2.15" % "test"
+  // postgres for DB connectivity
+  "org.postgresql" % "postgresql" % postgresVersion
 )
